@@ -61,7 +61,7 @@ namespace lab1_tweets_objects_
                         exist_expression = true;
                         value = get_word_sentiment(CheckString);
                         count = CheckString.Split(' ').Length;
-                        Console.WriteLine(CheckString + " " + value);
+                        
                     }
                     CheckString += " " + words[y+1];
                 }
@@ -74,6 +74,10 @@ namespace lab1_tweets_objects_
             }
             return (mood / countofWords);
         }
+
+
+
     }
+
 }
 
