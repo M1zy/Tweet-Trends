@@ -25,9 +25,9 @@ namespace lab1_tweets_objects_
             
         }
         
-        public Dictionary<string, List<GMapPolygon>> Polygons(string json)
+        public Dictionary<string, List<GMapPolygon>> Polygons()
         {
-            Dictionary<string, List<List<List<double>>>> states = FromJson(json);
+            Dictionary<string, List<List<List<double>>>> states = FromJson("states.json");
             Dictionary<string, List<GMapPolygon>> z = new Dictionary<string, List<GMapPolygon>>();
 
             foreach (var v in states)
@@ -54,7 +54,7 @@ namespace lab1_tweets_objects_
         {
             Trends trends = new Trends();
             Tweet tweet = new Tweet();
-            Dictionary<string, List<GMapPolygon>>states = Polygons("states.json");
+            Dictionary<string, List<GMapPolygon>>states = Polygons();
             List<Tweet> tweets = tweet.BuildingTweets(file);
             Dictionary<Tweet, Poly> moodstates = new Dictionary<Tweet, Poly>();
             foreach (Tweet t in tweets)
@@ -65,7 +65,12 @@ namespace lab1_tweets_objects_
                     {
                         if (v.Value[i].IsInside(t.latLng))
                         {
-                            moodstates.Add(t, new Poly(v.Key, i, trends.AverageMood(t)));break;
+
+                            if (trends.AverageMood(t) >= -1 && trends.AverageMood(t) <= 1)
+                            {
+                                moodstates.Add(t, new Poly(v.Key, v.Value[i], trends.AverageMood(t))); break;
+                            }
+                           
                         }
                     }
                 }
@@ -74,86 +79,62 @@ namespace lab1_tweets_objects_
             return moodstates;
         }
 
-        public Dictionary<string, List<double>> AverageMood_OF_States(string file)
+        public Dictionary<GMapPolygon, double> AverageMood_OF_States(string file)
         {
-            Dictionary<string, List<GMapPolygon>> polygons = Polygons("states.json");
-            int countofpolygons = 0;
+            Dictionary<string, List<GMapPolygon>> polygons = Polygons();
+            int count_OF_polygons = 0;
             foreach(var v in polygons)
             {
-                countofpolygons += v.Value.Count;
-            }
-            double[] mood = new double[countofpolygons];
-            int[] countofTweets = new int[countofpolygons];
-            Dictionary<Tweet, Poly> tweets = MoodOfStates(file);
-            for(int i = 0; i < countofpolygons; i++)
-            {
-                mood[i] = 0;countofTweets[i] = 0;
+                count_OF_polygons += v.Value.Count;
             }
 
-            Dictionary<string, List<double>> states = new Dictionary<string, List<double>>();
+            Dictionary<GMapPolygon, double> states = new Dictionary<GMapPolygon, double>();
+            Dictionary<GMapPolygon, int> count_tweets = new Dictionary<GMapPolygon, int>();
 
-            foreach(var v in tweets)
-            {
-                mood[NumberOfpolygonInGeneral(v.Value)] += v.Value.mood;
-                countofTweets[NumberOfpolygonInGeneral(v.Value)]++;
-            }
-            double[] averageMoodofTweets = new double[countofpolygons];
-            for(int i = 0; i < averageMoodofTweets.Length; i++)
-            {
-                averageMoodofTweets[i] = mood[i] / countofTweets[i];
-            }
-            int o = 0;
-            foreach(var v in polygons)
-            {
-                List<double> moods = new List<double>();
+            Dictionary<Tweet, Poly> tweets =MoodOfStates(file);
+
+                foreach(var v in tweets)
                 {
-                    for(int i = 0; i < v.Value.Count; i++)
-                    {
-                        moods.Add(averageMoodofTweets[o]);o++;
-                    }
+
+                if (states.ContainsKey(v.Value.polygon)) { states[v.Value.polygon] += v.Value.mood; count_tweets[v.Value.polygon]++; }
+
+                else { states.Add(v.Value.polygon, v.Value.mood);count_tweets.Add(v.Value.polygon, 1); }
+     
                 }
-                states.Add(v.Key, moods);
-                
-            }
+
+                foreach(var v in count_tweets) { states[v.Key]/=v.Value; }
             return states;
 
         }
 
         public void OutPutAllMoods(string file)
         {
-            Dictionary<string, List<double>> ave = AverageMood_OF_States(file);
-            foreach(var v in ave)
-            {
-                Console.WriteLine(v.Key);
-                for (int i = 0; i < v.Value.Count; i++)
-                {
-                    Console.Write(v.Value[i] + " ");
-                }
-                Console.WriteLine("-------------------");
-            }
+            /*  Dictionary<string, List<double>> ave = AverageMood_OF_States(file);
+              foreach(var v in ave)
+              {
+                  Console.WriteLine(v.Key);
+                  for (int i = 0; i < v.Value.Count; i++)
+                  {
+                      Console.Write(v.Value[i] + " ");
+                  }
+                  Console.WriteLine("-------------------");
+              }*/
+            
+          Dictionary<GMapPolygon, double> d = AverageMood_OF_States(file);
+          foreach(var v in d) Console.WriteLine(v.Key + " " + v.Value );
+           Dictionary<Tweet, Poly> z = MoodOfStates(file);
+            foreach (var v in z) { Console.WriteLine(v.Key.text + " " + v.Value.mood + " " + v.Value.name); }
         }
 
-        public int NumberOfpolygonInGeneral(Poly poly)
-        {
-            int number = 0;
-            Dictionary<string, List<GMapPolygon>> p = Polygons("states.json");
-            foreach (var v in p)
-            {
-                if (v.Key == poly.name) { number += poly.polygon; break; }
-                else number += v.Value.Count;
 
-
-            }
-            return number;
-        }
     }
     public class Poly
     {
         public string name;
-        public int polygon;
+        public GMapPolygon polygon;
         public double mood;
         public Poly() { }
-        public Poly(string name,int polygon,double mood)
+        public Poly(string name,GMapPolygon polygon,double mood)
         {
             this.name = name;this.polygon = polygon; this.mood = mood;
         }

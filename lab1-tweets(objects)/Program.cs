@@ -5,7 +5,7 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using GMap.NET.WindowsForms;
 
 namespace lab1_tweets_objects_
 {
@@ -14,10 +14,11 @@ namespace lab1_tweets_objects_
         static void Main(string[] args)
         {
 
-            geoParsing geo = new geoParsing();
-            geo.OutPutAllMoods("my_life");
+         geoParsing geo = new geoParsing();
+            geo.OutPutAllMoods("all_tweets");
+
             Console.ReadKey();
-            /*
+           /*
             if (args.Length == 0)
             {
                 // run as windows app

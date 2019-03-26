@@ -41,11 +41,11 @@ namespace lab1_tweets_objects_
         {
             geoParsing geoParsing = new geoParsing();
             GMapOverlay polyOverlay = new GMapOverlay("polygons");
-            Dictionary<string, List<GMapPolygon>> polygons = geoParsing.Polygons("states.json");
+            Dictionary<string, List<GMapPolygon>> polygons = geoParsing.Polygons();
             
 
 
-            GMapPolygon polygon = polygons["VA"][0];
+            GMapPolygon polygon = polygons["TX"][0];
             GMapPolygon polygon1 = polygons["VA"][2];
             polygon.Fill = new SolidBrush(Color.FromArgb(100, Color.BlueViolet));
             polygon.Stroke = new  Pen(Color.Black,1);
