@@ -14,24 +14,22 @@ namespace lab1_tweets_objects_
         static void Main(string[] args)
         {
 
-         geoParsing geo = new geoParsing();
-            geo.OutPutAllMoods("all_tweets");
+            /*   geoParsing geo = new geoParsing();
+                  geo.OutPutAllMoods("all_tweets");
 
-            Console.ReadKey();
-           /*
-            if (args.Length == 0)
-            {
-                // run as windows app
-                Application.EnableVisualStyles();
-                Application.Run(new Map());
-            }
-            else
-            {
-                // run as console app
-                
-                Console.WriteLine("Hello World");
-                Console.ReadLine();
-            }*/
+                  Console.ReadKey();*/
+
+
+                  // run as windows app
+                  Application.EnableVisualStyles();
+
+                  Map p = new Map();
+                  p.file = "my_life";
+                  Application.Run(p);
+              
+         
+              
+ 
         }
     
     }

@@ -24,31 +24,7 @@ namespace lab1_tweets_objects_
         }
 
 
-        public List<Tweet> BuildingTweets(string file)
-        {
-            Parsing p = new Parsing();
-            List<Tweet> tweets = new List<Tweet>();
-            string[] infos = p.info(file);
 
-            for (int i = 0; i < infos.Length; i++)
-            {
-
-                string[] parsingtweet = infos[i].Split(new string[] { "	" }, StringSplitOptions.RemoveEmptyEntries);
-                if (parsingtweet.Length == 4)
-                {
-                    string[] Coordinates = parsingtweet[0].Split(new string[] { "[", "]", "," }, StringSplitOptions.RemoveEmptyEntries);
-                    Coordinates[0] = Coordinates[0].Replace('.', ','); Coordinates[1] = Coordinates[1].Replace('.', ',');
-                    DateTime date = DateTime.ParseExact(parsingtweet[2], "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                    PointLatLng latLng= new PointLatLng(double.Parse(Coordinates[0]), double.Parse(Coordinates[1]));
-                    Tweet t = new Tweet(latLng,p.DayofWeek(int.Parse(parsingtweet[1])), date, parsingtweet[3]);
-
-                    tweets.Add(t);
-                }
-            }
-           /* foreach (Tweet t in tweets) Console.WriteLine(t.z.latitude+" "+t.z.longitude);
-            Console.ReadKey();*/
-            return tweets;
-        }
 
 
         public List<string> tweet_words()

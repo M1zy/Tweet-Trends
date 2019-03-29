@@ -10,7 +10,14 @@ namespace lab1_tweets_objects_
 {
     public class Trends
     {
-
+        public Trends()
+        {
+            if (creating == false)
+            {
+                CreatingDictionary();creating = true;
+            }
+            
+        }
         public Dictionary<string, double> wordsValue = new Dictionary<string, double>();
         bool creating = false;
 
@@ -32,13 +39,13 @@ namespace lab1_tweets_objects_
 
         double get_word_sentiment(string word)
         {
-            if (creating == false) { CreatingDictionary(); }
+            
             return wordsValue[word.ToLower()];
         }
 
         bool IsExistword(string word)
         {
-            if (creating == false) {  CreatingDictionary(); }
+            
             if (wordsValue.ContainsKey(word.ToLower())) return true;
             return false;
         }

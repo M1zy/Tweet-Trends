@@ -53,9 +53,9 @@ namespace lab1_tweets_objects_
         public Dictionary<Tweet, Poly> MoodOfStates(string file)
         {
             Trends trends = new Trends();
-            Tweet tweet = new Tweet();
+            Parsing parsing = new Parsing();
             Dictionary<string, List<GMapPolygon>>states = Polygons();
-            List<Tweet> tweets = tweet.BuildingTweets(file);
+            List<Tweet> tweets = parsing.BuildingTweets(file);
             Dictionary<Tweet, Poly> moodstates = new Dictionary<Tweet, Poly>();
             foreach (Tweet t in tweets)
             {

@@ -15,6 +15,7 @@ namespace lab1_tweets_objects_
 {
     public partial class Map : Form
     {
+        public string file = "";
         public Map()
         {
             InitializeComponent();
@@ -32,7 +33,7 @@ namespace lab1_tweets_objects_
             gMap.DragButton = MouseButtons.Left;
             gMap.Position = new PointLatLng(40, -100);
             gMap.MinZoom = 4;
-            gMap.MaxZoom = 48;
+            gMap.MaxZoom = 200;
             gMap.Zoom = 4;
             Drawing();
         }
@@ -40,20 +41,22 @@ namespace lab1_tweets_objects_
         public void Drawing()
         {
             geoParsing geoParsing = new geoParsing();
-            GMapOverlay polyOverlay = new GMapOverlay("polygons");
+            GMapOverlay polyOverlay = new GMapOverlay("States");
             Dictionary<string, List<GMapPolygon>> polygons = geoParsing.Polygons();
+
             
+            Dictionary<GMapPolygon, double> polygonsMood = geoParsing.AverageMood_OF_States(file);
+            double scaleColor = (polygonsMood.Values.Max() - polygonsMood.Values.Min())/255;
+            foreach (var str in polygonsMood)
+            {
+                GMapPolygon polygon = str.Key;
+                    polygon.Fill = new SolidBrush(Color.FromArgb(Convert.ToInt32((str.Value - polygonsMood.Values.Min()) / scaleColor), Color.Red));
+                    polygon.Stroke = new Pen(Color.Black, 1);
+                    polyOverlay.Polygons.Add(polygon);
 
-
-            GMapPolygon polygon = polygons["TX"][0];
-            GMapPolygon polygon1 = polygons["VA"][2];
-            polygon.Fill = new SolidBrush(Color.FromArgb(100, Color.BlueViolet));
-            polygon.Stroke = new  Pen(Color.Black,1);
-            polygon1.Fill = new SolidBrush(Color.FromArgb(100, Color.GreenYellow));
-            polygon1.Stroke = new Pen(Color.Black,1);
-            polyOverlay.Polygons.Add(polygon);
-            polyOverlay.Polygons.Add(polygon1);
+            }
             gMap.Overlays.Add(polyOverlay);
+        }
 
         }
 
@@ -62,5 +65,5 @@ namespace lab1_tweets_objects_
 
           }*/
 
-    }
+    
 }
