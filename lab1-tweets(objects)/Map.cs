@@ -29,7 +29,7 @@ namespace lab1_tweets_objects_
 
         private void button1_Click(object sender, EventArgs e)
         {
-            gMap.MapProvider = GMapProviders.GoogleMap;
+            gMap.MapProvider = GMapProviders.BingMap;
             gMap.DragButton = MouseButtons.Left;
             gMap.Position = new PointLatLng(40, -100);
             gMap.MinZoom = 4;

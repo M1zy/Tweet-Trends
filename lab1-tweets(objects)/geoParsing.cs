@@ -21,7 +21,7 @@ namespace lab1_tweets_objects_
         public Dictionary<string, List<List<List<double>>>> FromJson(string json)
         {
             string jsonstring = new StreamReader(json).ReadToEnd();
-                return JsonConvert.DeserializeObject<Dictionary<string, List<List<List<double>>>>>(jsonstring,lab1_tweets_objects_.Converter.Settings);
+                return JsonConvert.DeserializeObject<Dictionary<string, List<List<List<double>>>>>(jsonstring);
             
         }
         
@@ -139,18 +139,7 @@ namespace lab1_tweets_objects_
             this.name = name;this.polygon = polygon; this.mood = mood;
         }
     }
-    internal static class Converter
-    {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
-            Converters =
-            {
-                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
-            }
-        };
-    }
+
 
 
 

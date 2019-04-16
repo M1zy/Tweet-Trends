@@ -24,7 +24,7 @@ namespace lab1_tweets_objects_
                   Application.EnableVisualStyles();
 
                   Map p = new Map();
-                  p.file = "my_life";
+                  p.file = "texas";
                   Application.Run(p);
               
          

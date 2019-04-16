@@ -15,28 +15,11 @@ namespace lab1_tweets_objects_
     {
         string[] daysofWeek = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
-        public string[] info(string file)
-        {
-            StreamReader reader = new StreamReader(file+".txt");
-            string FullText = reader.ReadToEnd();
-            reader.Close();
-            string[] tweets = FullText.Split(new string[] { "\n" },StringSplitOptions.RemoveEmptyEntries );
-           
-     
-         //   foreach (string s in tweets) { Console.WriteLine(s); }
-           
-            return tweets;
-            
-         /*   foreach(string s in sentences)
-            { 
-                if(!s.Contains())
-            }*/
-        }
+ 
         public List<Tweet> BuildingTweets(string file)
         {
             Parsing p = new Parsing();
             List<Tweet> tweets = new List<Tweet>();
-            string[] infos = p.info(file);
             string tweet = "";
             StreamReader reader = new StreamReader(file + ".txt");
             while ((tweet = reader.ReadLine()) != null)
